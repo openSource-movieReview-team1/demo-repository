@@ -1,0 +1,29 @@
+.movie-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 16px;
+  margin: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.movie-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+.movie-card img {
+  border-radius: 12px;
+  width: 150px;
+  margin-bottom: 12px;
+}
+.movie-card h3 {
+  margin: 8px 0 4px 0;
+}
+.movie-card p {
+  color: #666;
+  margin: 0;
+}
