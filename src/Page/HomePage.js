@@ -34,8 +34,8 @@ function HomePage({ onSelectMovie, wishlist, onToggleWishlist }) {
 
   // 필터링 검색
   let filtered = moviesWithAvgRating.filter((movie) =>
-    movie.title.toLowerCase().includes(query.toLowerCase())
-  );
+  (movie.title || '').toLowerCase().includes(query.toLowerCase())
+);
 
   // 별점 필터
   filtered = filtered.filter((m) => (m.avgRating || 0) >= minRating);
@@ -101,7 +101,7 @@ function HomePage({ onSelectMovie, wishlist, onToggleWishlist }) {
         {filtered.length > 0 ? (
           filtered.map((movie) => (
             <MovieCard
-              key={movie.id}
+              key={movie.id || movie.title}
               movie={movie}
               wishlist={wishlist}
               onToggleWishlist={onToggleWishlist}
