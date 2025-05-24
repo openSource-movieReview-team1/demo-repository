@@ -38,40 +38,44 @@ function App() {
   };
 
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              movies={movies}
-              wishlist={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-            />
-          }
-        />
-        <Route
-          path="/movie/:id"
-          element={
-            <MovieDetailPage
-              wishlist={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-            />
-          }
-        />
-        <Route
-          path="/wishlist"
-          element={
-            <WishlistPage
-              movies={movies}
-              wishlist={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-            />
-          }
-        />
-      </Routes>
-    </Router>
+    <>
+      {/* 넷플릭스 스타일 상단 그라데이션 */}
+      <div className="bg-gradient"></div>
+      <Router>
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                movies={movies}
+                wishlist={wishlist}
+                onToggleWishlist={handleToggleWishlist}
+              />
+            }
+          />
+          <Route
+            path="/movie/:id"
+            element={
+              <MovieDetailPage
+                wishlist={wishlist}
+                onToggleWishlist={handleToggleWishlist}
+              />
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <WishlistPage
+                movies={movies}
+                wishlist={wishlist}
+                onToggleWishlist={handleToggleWishlist}
+              />
+            }
+          />
+        </Routes>
+      </Router>
+    </>
   );
 }
 

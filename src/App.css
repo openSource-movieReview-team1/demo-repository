@@ -48,8 +48,8 @@ body {
   min-height: 100vh;
 }
 header {
-  background: orchid;
-  color: #fff;
+  background: #141414;
+  color: #fff; 
   padding: 24px 0;
   text-align: center;
   margin-bottom: 32px;
