@@ -1,22 +1,30 @@
 @media (max-width: 900px) {
   .movie-list {
-    flex-wrap: wrap;
-    justify-content: center;
+    gap: 14px;
+    padding: 0 8px 16px 8px;
   }
   .movie-card {
-    width: 45vw;
-    min-width: 180px;
-    max-width: 250px;
+    min-width: 130px;
+    max-width: 130px;
+  }
+  .movie-card img {
+    height: 180px;
   }
 }
 @media (max-width: 600px) {
   .movie-list {
-    flex-direction: column;
-    align-items: center;
+    gap: 8px;
+    padding: 0 2px 8px 2px;
   }
   .movie-card {
-    width: 94vw;
-    min-width: 0;
-    max-width: 370px;
+    min-width: 110px;
+    max-width: 110px;
+  }
+  .movie-card img {
+    height: 120px;
+  }
+  .header {
+    font-size: 1.2rem;
+    padding: 18px 0 8px 0;
   }
 }
