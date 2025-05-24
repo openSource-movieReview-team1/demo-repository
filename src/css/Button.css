@@ -1,24 +1,23 @@
-button,
-.wish-btn {
-  background: linear-gradient(90deg, #f48fb1 0%, #ce93d8 100%);
+button, .wish-btn {
+  background: #e50914;
   color: #fff;
   border: none;
-  border-radius: 18px;
-  padding: 8px 20px;
+  border-radius: 4px;
+  padding: 7px 18px;
   font-weight: bold;
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.18s, transform 0.15s;
-  margin: 4px;
-  box-shadow: 0 2px 8px rgba(206, 147, 216, 0.1);
+  transition: background 0.15s;
+  margin: 8px 0 6px 0;
+  box-shadow: 0 2px 8px rgba(229,9,20,0.12);
+  letter-spacing: 0.5px;
 }
-button:hover,
-.wish-btn:hover {
-  background: linear-gradient(90deg, #ce93d8 0%, #f48fb1 100%);
-  transform: scale(1.05);
+
+button:hover, .wish-btn:hover {
+  background: #b0060f;
 }
+
 .wish-btn.inactive {
-  background: #eee;
-  color: #b39ddb;
-  border: 1.5px solid #ce93d8;
+  background: #444;
+  color: #bbb;
 }
