@@ -1,6 +1,7 @@
 .movie-list {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
   gap: 16px;
   justify-content: center;
 }
