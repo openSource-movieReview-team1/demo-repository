@@ -1,14 +1,18 @@
+body {
+  background: #141414;
+  color: #fff;
+  font-family: 'Noto Sans KR', 'Roboto', Arial, sans-serif;
+  margin: 0;
+}
+
 .header {
-  background: linear-gradient(90deg, #ce93d8 0%, #f48fb1 100%);
-  padding: 32px 0 22px 0;
-  border-radius: 0 0 24px 24px;
+  background: #141414;
   color: #fff;
   text-align: center;
-  font-size: 2rem;
-  font-weight: 700;
+  padding: 36px 0 18px 0;
+  font-size: 2.2rem;
+  font-weight: 800;
   letter-spacing: 1.5px;
-  box-shadow: 0 4px 20px rgba(206, 147, 216, 0.14);
-}
-body {
-  background: #fdf6ff;
+  border-bottom: 2px solid #e50914;
+  margin-bottom: 32px;
 }
