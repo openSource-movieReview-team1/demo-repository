@@ -83,48 +83,103 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
     <div style={{ background: "#111", minHeight: "100vh", color: "#fff" }}>
       <Header />
       {/* 영화 정보 영역 */}
-      <div style={{ display: "flex", gap: 32, marginBottom: 32 }}>
-        <img
-          className="movie-card"
-          src={movie.poster}
-          alt={movie.title}
-          width={220}
-          style={{ borderRadius: 8, boxShadow: "0 2px 8px #ccc" }}
-        />
-        <div style={{ flex: 1 }}>
-          {/* 여기의 h2만 남기고, h1은 위 header에만 남깁니다 */}
-          <h2 style={{ marginTop: 0 }}>
-            {movie.title}{" "}
-            <span style={{ color: "#888", fontSize: "1.2rem" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 0,
+          marginBottom: 32,
+        }}
+      >
+        {/* 영화 제목을 포스터 상단 중앙에 배치 */}
+        <h2
+          style={{
+            textAlign: "center",
+            fontSize: "2.2rem",
+            fontWeight: "bold",
+            margin: "32px 0 16px 0",
+            letterSpacing: "1px",
+          }}
+        >
+          {movie.title}{" "}
+          {movie.year && (
+            <span style={{ color: "#bbb", fontSize: "1.4rem" }}>
               ({movie.year})
             </span>
-          </h2>
-          <p style={{ margin: "16px 0" }}>{movie.description}</p>
-          <div style={{ margin: "12px 0" }}>
-            <span
+          )}
+        </h2>
+        <div style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
+          {/* 포스터 */}
+          <img
+            className="movie-card"
+            src={movie.poster}
+            alt={movie.title}
+            width={260}
+            style={{ borderRadius: 8, boxShadow: "0 2px 8px #ccc" }}
+          />
+          {/* 예고편 및 정보 */}
+          <div style={{ flex: 1 }}>
+            {/* 예고편 영역 */}
+            <div
               style={{
-                color: "#ffc107",
-                fontWeight: "bold",
-                fontSize: "1.2rem",
+                width: "100%",
+                height: 0,
+                paddingBottom: "56.25%",
+                position: "relative",
+                background: "#222",
+                borderRadius: 8,
+                marginBottom: 24,
               }}
             >
-              ★ {getAverageRating(reviews)} / 5
-            </span>
+              {/* 예고편이 있다면 iframe, 없으면 안내문구 */}
+              {/* 예시: <iframe src={movie.trailerUrl} ... /> */}
+              <div
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#888",
+                  fontSize: "1.1rem",
+                  background: "#222",
+                  borderRadius: 8,
+                }}
+              >
+                예고편이 준비되지 않았습니다.
+              </div>
+            </div>
+            {/* 영화 설명 및 기타 정보 */}
+            <p style={{ margin: "16px 0" }}>{movie.description}</p>
+            <div style={{ margin: "12px 0" }}>
+              <span
+                style={{
+                  color: "#ffc107",
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                }}
+              >
+                ★ {getAverageRating(reviews)} / 5
+              </span>
+            </div>
+            <button
+              style={{
+                background: wishlist.includes(movie.id) ? "#ffc107" : "#eee",
+                color: wishlist.includes(movie.id) ? "#222" : "#888",
+                border: "none",
+                borderRadius: 4,
+                padding: "8px 16px",
+                cursor: "pointer",
+                marginRight: 8,
+              }}
+              onClick={() => onToggleWishlist(movie.id)}
+            >
+              {wishlist.includes(movie.id) ? "즐겨찾기 해제" : "⭐ 즐겨찾기"}
+            </button>
           </div>
-          <button
-            style={{
-              background: wishlist.includes(movie.id) ? "#ffc107" : "#eee",
-              color: wishlist.includes(movie.id) ? "#222" : "#888",
-              border: "none",
-              borderRadius: 4,
-              padding: "8px 16px",
-              cursor: "pointer",
-              marginRight: 8,
-            }}
-            onClick={() => onToggleWishlist(movie.id)}
-          >
-            {wishlist.includes(movie.id) ? "즐겨찾기 해제" : "⭐ 즐겨찾기"}
-          </button>
         </div>
       </div>
 
