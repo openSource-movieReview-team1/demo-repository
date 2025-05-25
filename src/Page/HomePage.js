@@ -3,6 +3,7 @@ import MovieCard from '../Component/MovieCard';
 import { getMovies } from '../Service/MovieService';
 import { getAllReviews } from '../Service/ReviewService';
 import { useNavigate } from 'react-router-dom';
+import Header from '../Component/Header';
 
 // 평균 별점 가져오기
 function getAverageRating(reviews) {
@@ -59,7 +60,12 @@ function HomePage({ onSelectMovie, wishlist, onToggleWishlist }) {
   });
 
   return (
-    <div>
+    <div style={{ background: '#111', minHeight: '100vh', color: '#fff' }}>
+      <Header
+        showSearch={true}
+        searchValue={query}
+        onSearchChange={setQuery}
+      />
       <h2>영화 목록</h2>
       {/* 검색창 */}
       <input

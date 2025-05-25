@@ -1,25 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getMovieById, getMovies } from '../Service/MovieService';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { getMovieById, getMovies } from "../Service/MovieService";
 import {
   getReviewsByMovieId,
   addReview,
   deleteReview,
   updateReview,
-} from '../Service/ReviewService';
-import MovieCard from '../Component/MovieCard'; // 추천 영화 표시용
-import '../css/Form.css';
-import '../css/MovieCard.css';
+} from "../Service/ReviewService";
+import MovieCard from "../Component/MovieCard"; // 추천 영화 표시용
+import Header from "../Component/Header";
+import "../css/Form.css";
+import "../css/MovieCard.css";
 
 function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState('');
+  const [reviewText, setReviewText] = useState("");
   const [rating, setRating] = useState(0);
   const [editingReviewId, setEditingReviewId] = useState(null);
-  const [editText, setEditText] = useState('');
+  const [editText, setEditText] = useState("");
   const [editRating, setEditRating] = useState(0);
   const [allMovies, setAllMovies] = useState([]); // 추천 영화 관련 상태
 
@@ -34,7 +35,7 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
     updateReview(editingReviewId, editText, editRating).then(() => {
       getReviewsByMovieId(Number(id)).then(setReviews);
       setEditingReviewId(null);
-      setEditText('');
+      setEditText("");
       setEditRating(0);
     });
   };
@@ -42,7 +43,7 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
   // 수정 취소
   const handleCancelEdit = () => {
     setEditingReviewId(null);
-    setEditText('');
+    setEditText("");
     setEditRating(0);
   };
 
@@ -54,12 +55,12 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
 
   const handleAddReview = () => {
     if (!reviewText.trim() || rating === 0) {
-      alert('별점과 리뷰를 모두 입력해주세요.');
+      alert("별점과 리뷰를 모두 입력해주세요.");
       return;
     }
     addReview(Number(id), reviewText, rating).then((newReview) => {
       setReviews((prev) => [...prev, newReview]);
-      setReviewText('');
+      setReviewText("");
       setRating(0);
     });
   };
@@ -79,103 +80,157 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
   if (!movie) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h2>{movie.title}</h2>
-      <img
-        className="movie-card"
-        src={movie.poster}
-        alt={movie.title}
-        width={200}
-      />
-      <p>{movie.description}</p>
-      <h3 style={{ marginTop: 32 }}>추천 영화</h3>
-      {recommendedMovies.length > 0 ? (
-        <div style={{ display: 'flex', gap: '16px', marginBottom: 24 }}>
-          {recommendedMovies.map((recMovie) => (
-            <MovieCard
-              key={recMovie.id}
-              movie={recMovie}
-              wishlist={wishlist} // 추가!
-              onToggleWishlist={onToggleWishlist} // 추가!
-              avgRating={recMovie.avgRating} // 필요하다면
-            />
-          ))}
-        </div>
-      ) : (
-        <p>추천할 영화가 없습니다.</p>
-      )}
-      <p>
-        평균 별점:
-        <span style={{ color: '#ffc107', fontWeight: 'bold', marginLeft: 4 }}>
-          {getAverageRating(reviews)} / 5
-        </span>
-      </p>
-      <h3>리뷰</h3>
-      <ul>
-        {reviews.map((r) => (
-          <li key={r.id} style={{ marginBottom: 8 }}>
-            {editingReviewId === r.id ? (
-              <div>
-                {/* 수정 모드 */}
-                <StarRating value={editRating} onChange={setEditRating} />
-                <textarea
-                  value={editText}
-                  onChange={(e) => setEditText(e.target.value)}
-                  rows={2}
-                  style={{ width: '50%', marginBottom: '8px', height: '40px' }}
-                />
-                <br />
-                <button onClick={handleSaveEdit}>저장</button>
-                <button onClick={handleCancelEdit} style={{ marginLeft: 8 }}>
-                  취소
-                </button>
-              </div>
-            ) : (
-              <div>
-                {/* 읽기 모드 */}
-                <span>
-                  {Array.from({ length: 5 }, (_, i) => (
-                    <span
-                      key={i}
-                      style={{
-                        color: i < (r.rating || 0) ? '#ffc107' : '#e4e5e9',
-                      }}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </span>
-                <br />
-                {r.text}
-                <br />
-                <button
-                  onClick={() => handleEditReview(r)}
-                  style={{ marginRight: 5 }}
-                >
-                  수정
-                </button>
-                <button onClick={() => handleDeleteReview(r.id)}>삭제</button>
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
-      <div style={{ marginTop: '16px' }}>
-        {/* 별점 선택 */}
-        <StarRating value={rating} onChange={setRating} />
-        <textarea
-          value={reviewText}
-          onChange={(e) => setReviewText(e.target.value)}
-          placeholder="리뷰를 작성하세요"
-          rows={2}
-          style={{ width: '50%', marginBottom: '8px', height: '40px' }}
+    <div style={{ background: "#111", minHeight: "100vh", color: "#fff" }}>
+      <Header />
+      {/* 영화 정보 영역 */}
+      <div style={{ display: "flex", gap: 32, marginBottom: 32 }}>
+        <img
+          className="movie-card"
+          src={movie.poster}
+          alt={movie.title}
+          width={220}
+          style={{ borderRadius: 8, boxShadow: "0 2px 8px #ccc" }}
         />
-        <br />
-        <button onClick={handleAddReview} style={{ marginRight: '8px' }}>
-          리뷰 등록
-        </button>
-        <button onClick={() => navigate(-1)}>뒤로가기</button>
+        <div style={{ flex: 1 }}>
+          {/* 여기의 h2만 남기고, h1은 위 header에만 남깁니다 */}
+          <h2 style={{ marginTop: 0 }}>
+            {movie.title}{" "}
+            <span style={{ color: "#888", fontSize: "1.2rem" }}>
+              ({movie.year})
+            </span>
+          </h2>
+          <p style={{ margin: "16px 0" }}>{movie.description}</p>
+          <div style={{ margin: "12px 0" }}>
+            <span
+              style={{
+                color: "#ffc107",
+                fontWeight: "bold",
+                fontSize: "1.2rem",
+              }}
+            >
+              ★ {getAverageRating(reviews)} / 5
+            </span>
+          </div>
+          <button
+            style={{
+              background: wishlist.includes(movie.id) ? "#ffc107" : "#eee",
+              color: wishlist.includes(movie.id) ? "#222" : "#888",
+              border: "none",
+              borderRadius: 4,
+              padding: "8px 16px",
+              cursor: "pointer",
+              marginRight: 8,
+            }}
+            onClick={() => onToggleWishlist(movie.id)}
+          >
+            {wishlist.includes(movie.id) ? "즐겨찾기 해제" : "⭐ 즐겨찾기"}
+          </button>
+        </div>
       </div>
+
+      {/* 리뷰 영역 */}
+      <section style={{ marginBottom: 40 }}>
+        <h3>리뷰</h3>
+        <ul style={{ padding: 0, listStyle: "none" }}>
+          {reviews.map((r) => (
+            <li
+              key={r.id}
+              style={{
+                marginBottom: 16,
+                borderBottom: "1px solid #eee",
+                paddingBottom: 12,
+              }}
+            >
+              {editingReviewId === r.id ? (
+                <div>
+                  <StarRating value={editRating} onChange={setEditRating} />
+                  <textarea
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    rows={2}
+                    style={{
+                      width: "60%",
+                      marginBottom: "8px",
+                      height: "40px",
+                    }}
+                  />
+                  <br />
+                  <button onClick={handleSaveEdit}>저장</button>
+                  <button onClick={handleCancelEdit} style={{ marginLeft: 8 }}>
+                    취소
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <span>
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          color: i < (r.rating || 0) ? "#ffc107" : "#e4e5e9",
+                          fontSize: "1.1rem",
+                        }}
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </span>
+                  <br />
+                  {r.text}
+                  <br />
+                  <button
+                    onClick={() => handleEditReview(r)}
+                    style={{ marginRight: 5 }}
+                  >
+                    수정
+                  </button>
+                  <button onClick={() => handleDeleteReview(r.id)}>삭제</button>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+        {/* 리뷰 작성 폼 */}
+        <div style={{ marginTop: 24 }}>
+          <StarRating value={rating} onChange={setRating} />
+          <textarea
+            value={reviewText}
+            onChange={(e) => setReviewText(e.target.value)}
+            placeholder="리뷰를 작성하세요"
+            rows={2}
+            style={{
+              width: "60%",
+              marginBottom: "8px",
+              height: "40px",
+            }}
+          />
+          <br />
+          <button onClick={handleAddReview} style={{ marginRight: "8px" }}>
+            리뷰 등록
+          </button>
+          <button onClick={() => navigate(-1)}>뒤로가기</button>
+        </div>
+      </section>
+
+      {/* 추천 영화 영역 */}
+      <section>
+        <h3 style={{ marginTop: 32 }}>추천 영화</h3>
+        {recommendedMovies.length > 0 ? (
+          <div style={{ display: "flex", gap: "16px", marginBottom: 24 }}>
+            {recommendedMovies.map((recMovie) => (
+              <MovieCard
+                key={recMovie.id}
+                movie={recMovie}
+                wishlist={wishlist}
+                onToggleWishlist={onToggleWishlist}
+                avgRating={recMovie.avgRating}
+              />
+            ))}
+          </div>
+        ) : (
+          <p>추천할 영화가 없습니다.</p>
+        )}
+      </section>
     </div>
   );
 }
@@ -185,17 +240,17 @@ function StarRating({ value, onChange, totalStars = 5 }) {
   const [hover, setHover] = useState(0);
 
   return (
-    <div style={{ display: 'flex', gap: 2, marginBottom: 8 }}>
+    <div style={{ display: "flex", gap: 2, marginBottom: 8 }}>
       {Array.from({ length: totalStars }).map((_, i) => {
         const starValue = i + 1;
         return (
           <span
             key={starValue}
             style={{
-              cursor: 'pointer',
-              color: starValue <= (hover || value) ? '#ffc107' : '#e4e5e9',
-              fontSize: '1.5rem',
-              transition: 'color 0.2s',
+              cursor: "pointer",
+              color: starValue <= (hover || value) ? "#ffc107" : "#e4e5e9",
+              fontSize: "1.5rem",
+              transition: "color 0.2s",
             }}
             onClick={() => onChange(starValue)}
             onMouseEnter={() => setHover(starValue)}
