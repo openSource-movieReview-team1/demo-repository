@@ -24,6 +24,9 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
   const [editRating, setEditRating] = useState(0);
   const [allMovies, setAllMovies] = useState([]); // 추천 영화 관련 상태
 
+  // 검색 상태 추가
+  const [query, setQuery] = useState("");
+
   // 수정 시작
   const handleEditReview = (review) => {
     setEditingReviewId(review.id);
@@ -81,7 +84,8 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
 
   return (
     <div style={{ background: "#111", minHeight: "100vh", color: "#fff" }}>
-      <Header />
+      {/* 검색창이 포함된 Header */}
+      <Header showSearch={true} searchValue={query} onSearchChange={setQuery} />
       {/* 영화 정보 영역 */}
       <div
         style={{
