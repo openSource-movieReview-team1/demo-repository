@@ -156,8 +156,18 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
                 예고편이 준비되지 않았습니다.
               </div>
             </div>
-            {/* 영화 설명 및 기타 정보 */}
-            <p style={{ margin: "16px 0" }}>{movie.description}</p>
+            {/* 영화 설명 */}
+            <p style={{ margin: "16px 0" }}>소개: {movie.overview}</p>
+            {/* 영화 상세 정보 */}
+            <div style={{ margin: "12px 0" }}>
+              <p>개봉: {movie.release_date}</p>
+              <p>등급: {movie.ageLimit}</p>
+              <p>장르: {movie.genres}</p>
+              <p>국가: {movie.country}</p>
+              <p>상영 시간: {movie.runtime} 분</p>
+              <p>언어: {movie.language}</p>
+              <p>배급: {movie.distributor}</p>
+            </div>
             <div style={{ margin: "12px 0" }}>
               <span
                 style={{
