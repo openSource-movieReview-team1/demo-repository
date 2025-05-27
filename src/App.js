@@ -13,6 +13,20 @@ function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
+  // 스크롤에 따라 그라데이션 투명도 조절
+  const [gradientOpacity, setGradientOpacity] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const max = 100; // 0~100px 구간에서만 점점 불투명
+      const opacity = Math.min(scrollY / max, 1);
+      setGradientOpacity(opacity);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   function Header() {
     return (
       <header>
@@ -38,40 +52,50 @@ function App() {
   };
 
   return (
-    <Router>
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <HomePage
-              movies={movies}
-              wishlist={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-            />
-          }
-        />
-        <Route
-          path="/movie/:id"
-          element={
-            <MovieDetailPage
-              wishlist={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-            />
-          }
-        />
-        <Route
-          path="/wishlist"
-          element={
-            <WishlistPage
-              movies={movies}
-              wishlist={wishlist}
-              onToggleWishlist={handleToggleWishlist}
-            />
-          }
-        />
-      </Routes>
-    </Router>
+    <>
+      {/* 스크롤에 따라 투명도가 변하는 넷플릭스 스타일 상단 그라데이션 */}
+      <div
+        className="bg-gradient"
+        style={{
+          opacity: gradientOpacity,
+          transition: 'opacity 0.2s'
+        }}
+      ></div>
+      <Router>
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                movies={movies}
+                wishlist={wishlist}
+                onToggleWishlist={handleToggleWishlist}
+              />
+            }
+          />
+          <Route
+            path="/movie/:id"
+            element={
+              <MovieDetailPage
+                wishlist={wishlist}
+                onToggleWishlist={handleToggleWishlist}
+              />
+            }
+          />
+          <Route
+            path="/wishlist"
+            element={
+              <WishlistPage
+                movies={movies}
+                wishlist={wishlist}
+                onToggleWishlist={handleToggleWishlist}
+              />
+            }
+          />
+        </Routes>
+      </Router>
+    </>
   );
 }
 
