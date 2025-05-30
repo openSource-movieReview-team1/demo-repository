@@ -12,7 +12,7 @@ function MovieCard({ movie, avgRating, wishlist = [], onToggleWishlist }) {
   return (
     <div className="movie-card" onClick={() => navigate(`/movie/${movie.id}`)}>
       {/* ✅ 포스터 */}
-      <img src={movie.poster} alt={movie.title} width={150} />
+      <img src={movie.poster_url} alt={movie.title} width={150} />
 
       {/* ✅ 제목 */}
       <h3>{movie.title}</h3>
@@ -32,7 +32,7 @@ function MovieCard({ movie, avgRating, wishlist = [], onToggleWishlist }) {
       <p>
         평균 별점:
         <span style={{ color: '#ffc107', fontWeight: 'bold', marginLeft: 4 }}>
-          {avgRating} / 5
+           {Math.round(movie.rating / 2).toFixed(1)}
         </span>
       </p>
     </div>
