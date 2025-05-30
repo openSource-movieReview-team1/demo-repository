@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 엑셀 파일 경로
-const excelFilePath = path.join(__dirname, '../data/TMDB_영화정보.xlsx');
+const excelFilePath = path.join(__dirname, '../data/movies.xlsx');
 // 저장될 JSON 파일 경로
 const jsonFilePath = path.join(__dirname, '../public/movies.json');
 

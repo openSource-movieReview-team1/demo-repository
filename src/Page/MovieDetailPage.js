@@ -83,7 +83,7 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
       <h2>{movie.title}</h2>
       <img
         className="movie-card"
-        src={movie.poster}
+        src={movie.poster_url}
         alt={movie.title}
         width={200}
       />
