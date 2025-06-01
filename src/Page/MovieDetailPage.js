@@ -26,7 +26,7 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
   // 수정 시작
   const handleEditReview = (review) => {
     setEditingReviewId(review.id);
-    setEditText(review.text);
+    setEditText(review.content);
     setEditRating(review.rating);
   };
   // 수정 저장
@@ -52,17 +52,19 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
     getMovies().then(setAllMovies); // 모든 영화 데이터 가져오기
   }, [id]);
 
-  const handleAddReview = () => {
-    if (!reviewText.trim() || rating === 0) {
-      alert('별점과 리뷰를 모두 입력해주세요.');
-      return;
-    }
-    addReview(Number(id), reviewText, rating).then((newReview) => {
-      setReviews((prev) => [...prev, newReview]);
+  const handleAddReview = async () => {
+    try {
+      await addReview(movie.id, reviewText, rating);
+      const updated = await getReviewsByMovieId(Number(id));
+      setReviews(updated);
       setReviewText('');
       setRating(0);
-    });
+    } catch (err) {
+      alert("리뷰 등록 실패");
+      console.error(err);
+    }
   };
+  
 
   // 리뷰 삭제
   const handleDeleteReview = (reviewId) => {
@@ -146,7 +148,7 @@ function MovieDetailPage({ wishlist = [], onToggleWishlist = () => {} }) {
                   ))}
                 </span>
                 <br />
-                {r.text}
+                {r.content}
                 <br />
                 <button
                   onClick={() => handleEditReview(r)}
@@ -219,3 +221,4 @@ function getAverageRating(reviews) {
 }
 
 export default MovieDetailPage;
+
