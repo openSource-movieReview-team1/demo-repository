@@ -1,48 +1,76 @@
-// localStorage에서 리뷰 불러오기
-function loadReviews() {
-  const saved = localStorage.getItem('reviews');
-  return saved ? JSON.parse(saved) : [];
+const BASE_URL = "http://localhost:5001/api/reviews";
+
+// 전체 리뷰 가져오기
+export async function getAllReviews() {
+  try {
+    const res = await fetch(BASE_URL);
+    if (!res.ok) throw new Error("리뷰 조회 실패");
+    return await res.json();
+  } catch (err) {
+    console.error("❌ 전체 리뷰 불러오기 오류:", err);
+    throw err;
+  }
 }
 
-// localStorage에 리뷰 저장하기
-function saveReviews(reviews) {
-  localStorage.setItem('reviews', JSON.stringify(reviews));
+// 특정 영화 리뷰 가져오기
+export async function getReviewsByMovieId(movieId) {
+  try {
+    const res = await fetch(`${BASE_URL}?movieId=${movieId}`);
+    if (!res.ok) throw new Error("리뷰 조회 실패");
+    return await res.json();
+  } catch (err) {
+    console.error("❌ 영화 리뷰 불러오기 오류:", err);
+    throw err;
+  }
 }
 
-export function getReviewsByMovieId(movieId) {
-  const reviews = loadReviews();
-  return Promise.resolve(reviews.filter((r) => r.movieId === movieId));
-}
-
-// 리뷰 추가하기
-export function addReview(movieId, text, rating) {
-  const reviews = loadReviews();
-  const newReview = { id: Date.now(), movieId, text, rating, likes: 0 };
-  reviews.push(newReview);
-  saveReviews(reviews);
-  return Promise.resolve(newReview);
-}
-// 리뷰 전부 가져오기
-export function getAllReviews() {
-  return Promise.resolve(loadReviews());
+// 리뷰 추가
+export async function addReview(movieId, content, rating) {
+  try {
+    const res = await fetch(BASE_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ movie_id: movieId, content, rating }),
+    });
+    if (!res.ok) throw new Error("리뷰 저장 실패");
+    return await res.json();
+  } catch (err) {
+    console.error("❌ 리뷰 저장 오류:", err);
+    throw err;
+  }
 }
 
 // 리뷰 삭제
-export function deleteReview(reviewId) {
-  let reviews = loadReviews();
-  reviews = reviews.filter((r) => r.id !== reviewId);
-  saveReviews(reviews);
-  return Promise.resolve();
+export async function deleteReview(id) {
+  try {
+    const res = await fetch(`${BASE_URL}/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error("리뷰 삭제 실패");
+  } catch (err) {
+    console.error("❌ 리뷰 삭제 오류:", err);
+    throw err;
+  }
 }
 
 // 리뷰 수정
-export function updateReview(reviewId, newText, newRating) {
-  const reviews = loadReviews();
-  const idx = reviews.findIndex((r) => r.id === reviewId);
-  if (idx !== -1) {
-    reviews[idx].text = newText;
-    reviews[idx].rating = newRating;
-    saveReviews(reviews);
+export async function updateReview(id, content, rating) {
+  if (isNaN(Number(rating))) {
+    console.error("❗ rating이 숫자가 아님:", rating);
+    throw new Error("유효하지 않은 별점입니다.");
   }
-  return Promise.resolve();
+
+  try {
+    const res = await fetch(`${BASE_URL}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content, rating }),
+    });
+    if (!res.ok) throw new Error("리뷰 수정 실패");
+    return;
+  } catch (err) {
+    console.error("❌ 리뷰 수정 오류:", err);
+    throw err;
+  }
 }
+
