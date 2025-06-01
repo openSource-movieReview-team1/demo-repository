@@ -1,31 +1,38 @@
 import React, { useState } from 'react';
-import StarRating from '../Component/StarRating';
-import '../css/Form.css';
 
 function ReviewForm({ onSubmit }) {
-  const [reviewText, setReviewText] = useState('');
+  const [text, setText] = useState('');
   const [rating, setRating] = useState(0);
 
-  const handleSubmit = () => {
-    if (reviewText && rating) {
-      onSubmit({ text: reviewText, rating });
-      setReviewText('');
-      setRating(0);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!text || rating <= 0 || rating > 5) {
+      alert('리뷰와 별점을 올바르게 입력하세요.');
+      return;
     }
+    onSubmit({ text, rating });
+    setText('');
+    setRating(0);
   };
 
   return (
-    <div>
-      <StarRating totalStars={5} onChange={setRating} />
-      <textarea
-        value={reviewText}
-        onChange={(e) => setReviewText(e.target.value)}
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={text}
         placeholder="리뷰를 작성하세요"
-        rows={2}
-        style={{ width: '100%', margin: '8px 0', height: '40px' }}
+        onChange={(e) => setText(e.target.value)}
       />
-      <button onClick={handleSubmit}>리뷰 등록</button>
-    </div>
+      <input
+        type="number"
+        value={rating}
+        placeholder="평점 (1~5)"
+        onChange={(e) => setRating(Number(e.target.value))}
+        min="1"
+        max="5"
+      />
+      <button type="submit">등록</button>
+    </form>
   );
 }
 
